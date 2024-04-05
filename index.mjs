@@ -8,6 +8,22 @@ const locationInput = document.getElementById('locationInput');
 const getWeatherBtn = document.getElementById('getWeatherBtn');
 const weatherInfo = document.getElementById('weatherInfo');
 
+// Function to fetch weather data for New York
+async function getWeatherForNewYork() {
+    try {
+        const weatherData = await fetchWeatherData('New York');
+        displayWeather(weatherData);
+    } catch (error) {
+        weatherInfo.textContent = error.message;
+        weatherInfo.classList.add('alert-danger');
+        weatherInfo.classList.remove('alert-info');
+        weatherInfo.style.display = 'block';
+    }
+}
+
+// Display weather for New York on page load
+document.addEventListener('DOMContentLoaded', getWeatherForNewYork);
+
 async function getWeather() {
     const location = locationInput.value.trim();
     if (!isValidInput(location)) {
@@ -22,11 +38,10 @@ async function getWeather() {
         const weatherData = await fetchWeatherData(location);
         displayWeather(weatherData);
     } catch (error) {
-        weatherInfo.textContent = 'Failed to fetch weather data. Please try again later.';
+        weatherInfo.textContent = error.message;
         weatherInfo.classList.add('alert-danger');
         weatherInfo.classList.remove('alert-info');
         weatherInfo.style.display = 'block';
-        console.error(error.message);
     }
 }
 
